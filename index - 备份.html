@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动画页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: pink;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            height: 60%;
+            width: 100%;
+        }
+
+        img {
+            width: auto;
+            max-height: 30vh;
+            transition: 3s ease-in-out;
+        }
+
+        .title {
+            margin: 20px 0;
+            font-size: 24px;
+            color: #000;
+        }
+
+        .buttons {
+            position: absolute;
+            width: 100%;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+        }
+
+        .button {
+            padding: 10px 0px;
+            font-size: 18px;
+            background-color: #4c8bf5;
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+            transition: transform 1.5s ease;
+            width: 200px;/*这里矩形长度设置的200*/
+        }
+
+        .button:active {
+            transform: scale(0.9);
+            transition: all 1.5s ease;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* 定义初始位置 */
+        #buttonA {
+            position: absolute;
+            left: 25%; /* 初始位置在屏幕左侧25% */
+            transform: translateX(-50%);/*推测是减少矩形左侧50%*/
+            background-color: rgb(35, 238, 35);/*颜色绿*/
+        }
+
+        #buttonB {
+            position: absolute;
+            left: 75%; /* 初始位置在屏幕左侧75% */
+            transform: translateX(-50%);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img id="image" src="images/1.png" alt="Image">
+        <div class="title">这是标题</div>
+        <div class="buttons">
+            <button id="buttonA" class="button">A</button>
+            <button id="buttonB" class="button">B</button>
+        </div>
+    </div>
+
+    <script>
+        let step = 0;
+        const image = document.getElementById('image');
+        const buttonA = document.getElementById('buttonA');
+        const buttonB = document.getElementById('buttonB');
+
+        buttonB.addEventListener('click', () => {
+            // 获取屏幕宽度
+            const screenWidth = window.innerWidth;
+
+            if (step === 0) {
+                // 第一次点击B
+                buttonA.style.transform = `scale(1.5) translateX(${screenWidth * 0.05-150}px)`; // 移动到30%屏幕宽度
+                //注意注意，这里的“-75”为矩形一半的距离，当js执行之后，原transform失效，需要补回，然而js使矩形缩放为1.5倍，
+                //于是这里的计算公式为   基础距离-初始矩形大小*现倍率*50%
+                buttonB.style.transform = `translateX(${screenWidth * 0.05-100}px)`; // 移动到80%屏幕宽度
+                image.src = 'images/2.png';
+                //开始更改按钮中的文字
+                var texta1 =document.getElementById(`buttonA`);
+                texta1.innerHTML="aa";
+                var textb1 =document.getElementById(`buttonB`);
+                textb1.innerHTML="bb";
+
+                step++;
+            } else if (step === 1) {
+                // 第二次点击B
+                buttonA.style.transform = `scale(2) translateX(${screenWidth * 0.10-200}px)`; // 移动到40%屏幕宽度
+                buttonB.style.transform = `translateX(${screenWidth * 0.10-100}px)`; // 移动到90%屏幕宽度
+                image.src = 'images/3.png';
+                //开始更改按钮中的文字
+                var texta1 =document.getElementById(`buttonA`);
+                texta1.innerHTML="aaa";
+                var textb1 =document.getElementById(`buttonB`);
+                textb1.innerHTML="bbb";
+                step++;
+            } else if (step === 2) {
+                // 第三次点击B
+                buttonA.style.transform = `scale(3.0) translateX(${screenWidth * 0.25-300}px)`; // 移动到50%屏幕宽度
+                buttonB.style.transform = `translateX(${screenWidth * 0.25+100}px)`; // 移出屏幕
+                //开始更改按钮中的文字
+                var texta1 =document.getElementById(`buttonA`);
+                texta1.innerHTML="aaaa";
+                var textb1 =document.getElementById(`buttonB`);
+                textb1.innerHTML="bbbb";
+                document.body.style.backgroundColor = 'red';
+                image.src = 'images/4.png';
+                ;
+            }
+        });
+
+        buttonA.addEventListener('click', () => {
+            // 点击A时，将A按钮放大并跳转到 2.html
+            const diameter = buttonA.offsetWidth;
+            buttonA.style.transition = 'none'; // 禁用过渡效果
+            buttonA.style.borderRadius = '50%';
+            buttonA.style.width = diameter + 'px';
+            buttonA.style.height = diameter + 'px';
+            buttonA.style.position = 'absolute';
+            buttonA.style.left = '50%';
+            buttonA.style.top = '50%';
+            buttonA.style.transform = 'translate(-50%, -50%)';
+            
+            setTimeout(() => {
+                buttonA.style.transition = 'all 2s ease';
+                buttonA.style.transform = 'scale(50)';
+                setTimeout(() => {
+                    window.location.href = '2.html';
+                }, 2000);
+            }, 0);
+        });
+    </script>
+</body>
+</html>
